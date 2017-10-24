@@ -1,0 +1,72 @@
+// Place all the styles related to the search_terms controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.search-bar-container{
+  margin-top: 10%;
+  margin-left:10%;
+  margin-right: 5%;
+}
+
+.table-container{
+  padding-left: 3%;
+  padding-right: 3%;
+  margin-top: 5%;
+}
+
+.row-delete {
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.pagination {
+  margin-left: 25%;
+  margin-right: 20%;
+}
+
+.edit-container {
+  margin-left: 11px;
+  margin-top: -30px;
+}
+
+button{
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
+  cursor:pointer;
+  overflow: hidden;
+  outline:none;
+  color: #007bff;
+}
+
+.all-searches-container {
+  text-align: center;
+  margin-top: 2%;
+}
+
+.filter-bar-container {
+  margin-left: 25%;
+  margin-top: 5%;
+}
+
+.back-arrow-container {
+  font-size: 2em;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.search-icon {
+  float: right;
+}
+
+.cards-container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 2%;
+}
+
+.error-container {
+  margin-top: 2%;
+  text-align: center;
+}

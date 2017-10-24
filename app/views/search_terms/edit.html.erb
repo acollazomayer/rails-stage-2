@@ -1,0 +1,58 @@
+<%= form_for :search_term, url: search_terms_path, method: :get do |f| %>
+  <div class='form-inline filter-bar-container'>
+    <%= f.text_field :search,
+      :class => 'form-control col-lg-6 mx-sm-2',
+      :placeholder => 'What are you looking for?',
+      :autofocus => @focus,
+      :id => 'search-bar'
+    %>
+    <%= f.submit "Filter!", :class => 'btn btn-primary'%>
+  </div>
+<% end %>
+
+<div class='back-arrow-container'>
+  <%= link_to new_search_term_url do %>
+    <%= fa_icon "arrow-left" %>
+  <% end %>
+</div>
+
+<div class='table-container'>
+  <table class="table table-bordered table-striped table-responsive">
+    <thead>
+    <tr>
+        <th class='col-lg-6'>Search Term</th>
+        <th class='col-lg-2'>Count</th>
+    </tr>
+    </thead>
+    <tbody>
+      <% @search_terms_keys.each do |search_term| %>
+        <tr>
+          <td>
+            <%= link_to delete_term_search_terms_path(search_term), method: :delete do %>
+              <%= fa_icon 'close' %>
+            <% end %>
+            <% if @edit_term == search_term %>
+              <%= form_for :edit_term, url: update_term_search_terms_path(search_term) do |f| %>
+                <span class='form-inline edit-container'>
+                  <%= f.button fa_icon 'check' %>
+                  <%= f.text_field :search,
+                    :class => 'form-control col-lg-4 mx-sm-2',
+                    :value => search_term,
+                    :autofocus => true
+                  %>
+                </span>
+              <% end %>
+            <% else %>
+            <span><%= search_term %></span>
+            <%= link_to search_terms_path(:search_term => {:search => search_term}), method: :post, class: 'search-icon' do %>
+              <%= fa_icon 'google' %>
+            <% end %>
+            <% end %>
+          </td>
+          <td><%= @search_terms[search_term] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= will_paginate @search_terms_keys %>
+</div>
