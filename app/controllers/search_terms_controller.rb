@@ -15,19 +15,13 @@ class SearchTermsController < ApplicationController
       render 'new'
   end
 
-  def new
-    @focus = true
-  end
-
   def index
-    @focus = true
     term = params[:search_term] == nil ? '' : params[:search_term][:search]
     @search_terms = SearchTerm.where('search like ?', "%#{term}%").group(:search).order('count_id desc').count('id')
     @search_terms_keys = @search_terms.keys.paginate(:page => params[:page], :per_page => 5)
   end
 
   def edit
-    @focus = false
     @edit_term = params[:id]
     @search_terms = SearchTerm.group(:search).order('count_id desc').count('id')
     @search_terms_keys = @search_terms.keys.paginate(:page => params[:page], :per_page => 5)
