@@ -1,4 +1,9 @@
 development:
-  api_key: 'AIzaSyB3-LD3tl6XU_bGwqAJ2DSeSUWGOXiXOfo'
+  api_key: ''
+  url: 'https://www.googleapis.com/customsearch/v1?'
+  search_engine: '017576662512468239146:omuauf_lfve'
+
+test:
+  api_key: ''
   url: 'https://www.googleapis.com/customsearch/v1?'
   search_engine: '017576662512468239146:omuauf_lfve'

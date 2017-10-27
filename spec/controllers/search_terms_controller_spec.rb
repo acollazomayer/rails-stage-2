@@ -13,7 +13,7 @@ describe SearchTermsController do
 
     it "should populate an array of searches" do
       get :index
-      assigns(:search_terms_keys).should eql(["some_search1", "some_search2"])
+      assigns(:search_terms_keys).should match_array(["some_search1", "some_search2"])
     end
 
     it "should render the :index view" do
@@ -31,12 +31,12 @@ describe SearchTermsController do
     end
 
     it "should populates an array of searches" do
-      get :edit, id: 'someid'
-      assigns(:search_terms_keys).should eql(["some_search1", "some_search2"])
+      xhr :get, :edit, id: 'someid'
+      assigns(:search_terms_keys).should match_array(["some_search1", "some_search2"])
     end
 
     it "should render the edit view" do
-      get :edit, id: 'someid'
+      xhr :get, :edit, id: 'someid'
       response.should render_template :edit
     end
 
@@ -58,7 +58,14 @@ describe SearchTermsController do
         snippet: 'somesnippet',
         displayLink: 'somedisplayLink',
         link: 'somelink'
-      }]
+      }],
+      queries: {
+        request: [
+          {
+            totalResults: '12345'
+          }
+        ]
+      }
     }
 
     before do
@@ -109,11 +116,6 @@ describe SearchTermsController do
         }.to change(SearchTerm, :count).from(10).to(0)
       end
 
-      it 'should re-render the index view' do
-        delete :delete_term, term: 'somesearch'
-        response.should redirect_to action: 'index'
-      end
-
     end
   end
 
@@ -127,13 +129,8 @@ describe SearchTermsController do
     context 'when a term is deleted' do
 
       it 'should update all searches with that same term' do
-        post :update_term, edit_term: attributes_for(:search_term, search: 'someeditedvalue'), term: "somesearch"
+        xhr :post, :update_term, edit_term: attributes_for(:search_term, search: 'someeditedvalue'), term: "somesearch"
         expect(SearchTerm.group(:search).order('count_id desc').count('id')).to eql({'someeditedvalue' => 10})
-      end
-
-      it 'should re-render the index view' do
-        post :update_term, edit_term: attributes_for(:search_term), term: "somesearch"
-        response.should redirect_to action: 'index'
       end
 
     end
