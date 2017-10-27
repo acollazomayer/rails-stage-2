@@ -4,38 +4,52 @@ require 'rest-client'
 class SearchTermsController < ApplicationController
 
   def create
-      SearchTerm.create(search_params)
-      query = search_params[:search]
-      api_key = Rails.configuration.config['api_key']
-      search_engine = Rails.configuration.config['search_engine']
-      url = Rails.configuration.config['url']
-      response = RestClient.get url, { params: { key: api_key, cx: search_engine, q: query }}
-      body = JSON.parse(response.body)
-      @search_results = body['items']
-      render 'new'
+    SearchTerm.create(search_params)
+    query = search_params[:search]
+    @search = SearchTermsHelper.search(query)
+    render 'new'
   end
 
   def index
-    term = params[:search_term] == nil ? '' : params[:search_term][:search]
-    @search_terms = SearchTerm.where('search like ?', "%#{term}%").group(:search).order('count_id desc').count('id')
+    @search_terms = SearchTerm.search_by_term()
     @search_terms_keys = @search_terms.keys.paginate(:page => params[:page], :per_page => 5)
+  end
+
+  def filter_terms
+    @search_terms = SearchTerm.search_by_term(params[:search_term][:search])
+    @search_terms_keys = @search_terms.keys.paginate(:page => params[:page], :per_page => 5)
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def edit
     @edit_term = params[:id]
-    @search_terms = SearchTerm.group(:search).order('count_id desc').count('id')
+    @search_terms = SearchTerm.search_by_term()
     @search_terms_keys = @search_terms.keys.paginate(:page => params[:page], :per_page => 5)
+    respond_to do |format|
+      format.js
+    end
   end
 
   def delete_term
-    @search_terms = SearchTerm.where(search: params[:term]).destroy_all
-    redirect_to action: 'index'
+    SearchTerm.where(search: params[:term]).destroy_all
+    @search_terms = SearchTerm.search_by_term()
+    @search_terms_keys = @search_terms.keys.paginate(:page => params[:page], :per_page => 5)
+    respond_to do |format|
+      format.html { redirect_to search_terms_path }
+      format.js
+    end
   end
 
   def update_term
-    term = params[:term]
-    @search_terms = SearchTerm.where(search: term).update_all(search: edit_term_params[:search])
-    redirect_to action: 'index'
+    SearchTerm.where(search: params[:term]).update_all(search: edit_term_params[:search])
+    @search_terms = SearchTerm.search_by_term()
+    @search_terms_keys = @search_terms.keys.paginate(:page => params[:page], :per_page => 5)
+    respond_to do |format|
+      format.js
+    end
   end
 
   private

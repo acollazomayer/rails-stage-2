@@ -1,6 +1,5 @@
 $(document).ready(function(){
   disableSearchButton();
-  inputValue();
 });
 
 function disableSearchButton(){
@@ -15,10 +14,3 @@ function disableSearchButton(){
   });
 }
 
-function inputValue() {
-  $(".term").click(function(){
-    const term = $(this).text();
-    $('#search-bar').val($.trim(term));
-    $('#button').prop('disabled', false);
-  });
-}
