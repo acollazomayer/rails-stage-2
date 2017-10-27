@@ -1,0 +1,31 @@
+<div class='search-bar-container'>
+  <%= render 'shared/search_bar', {
+    url: search_terms_path,
+    submit_label: 'Search!',
+    method: :post,
+    focus: true,
+    remote: false
+    } %>
+</div>
+
+<div class='all-searches-container'>
+  <%= link_to 'All searches...', search_terms_path, :class => 'red-class' %>
+</div>
+
+<% if @search %>
+  <p class='counter-container'>Total Results: <%= @search[:total_results] %></p>
+  <% if @search[:total_results] > 0 %>
+    <div class="cards-container">
+      <% @search[:search_results][0,3] .each do |search_result| %>
+        <div class="card mb-2">
+          <div class="card-block">
+            <h4 class="card-title mt-2 ml-2"><%= search_result['title'] %></h4>
+            <h6 class="card-subtitle ml-2 mb-2 text-muted"><%= search_result['displayLink'] %></h6>
+            <p class="card-text ml-2"><%= search_result['snippet'] %></p>
+            <a href="#" class="card-link ml-2 mb-2"><%= search_result['link'] %></a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

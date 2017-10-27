@@ -1,0 +1,17 @@
+<div class=filter-bar-container>
+  <%= render 'shared/search_bar', {
+    url: filter_terms_search_terms_path,
+    submit_label: 'Filter!',
+    method: :get,
+    focus: true,
+    remote: true
+    } %>
+</div>
+
+<div class='back-arrow-container'>
+  <%= render 'shared/back_arrow' %>
+</div>
+
+<div id='table' class='table-container'>
+  <%= render 'shared/table'%>
+</div>
