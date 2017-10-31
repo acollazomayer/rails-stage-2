@@ -1,0 +1,11 @@
+<%= form_for :search_term, url: url, method: method, remote: remote do |f| %>
+    <div class='form-inline'>
+      <%= f.text_field :search,
+        :class => 'form-control col-lg-6 mx-sm-2',
+        :placeholder => 'What are you looking for?',
+        :autofocus => focus,
+        :id => 'search-bar'
+      %>
+      <%= f.submit submit_label, :class => 'btn btn-primary', :id => 'button'%>
+    </div>
+  <% end %>
